@@ -100,7 +100,7 @@ async def run_notifications_task(client: Client, account: TelegramAccount, pool:
 async def job(account):
     pool = await get_engine()
     account = await TelegramAccount.get_account(pool=pool, hashed=account)
-   #await MtProtoProxy.update(pool=pool, mtproxy_public_channel=config.mtproxy_public_channel)
+    await MtProtoProxy.update(pool=pool, mtproxy_public_channel=config.mtproxy_public_channel)
     client = None
     clean = False
     print(account)
@@ -108,7 +108,7 @@ async def job(account):
         client = await get_client(account=account, pool=pool)
         chats_ids = [chat.id for chat in await client.get_main_list_chats(limit=500)]
         await clean_subscriptions(client=client, account=account, pool=pool, chats_ids=chats_ids)
-        '''await TelegramAccount(**account.dict()).insert(pool=pool)
+        await TelegramAccount(**account.dict()).insert(pool=pool)
         if account.need_init:
             clean = False
             is_init = await init(client=client, account=account, pool=pool)
@@ -125,7 +125,7 @@ async def job(account):
             command = TopTgMoney.Command.EARN
         run_tasks = await run_notifications_task(client=client, account=account, pool=pool, command=command)
         if run_tasks:
-            await client.idle()'''
+            await client.idle()
         await client.stop()
     except Exception as exc:
         sys.exit(f'RUN {exc}')
@@ -164,7 +164,6 @@ if __name__ == '__main__':
         break
     #while True:
     for _account in accounts:
-        print(_account)
         p = Process(target=main, args=(_account,))
         p.start()
         p.join()
