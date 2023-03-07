@@ -1,0 +1,9 @@
+database:
+  database: postgres
+  host: localhost
+  need_to_create: false
+  password: postgres
+  port: 5432
+  user: postgres
+mtproxy_public_channel: ProxyMTProto
+threads: 10
